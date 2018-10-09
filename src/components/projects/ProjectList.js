@@ -2,7 +2,7 @@ import React from 'react'
 import ProjectSumary from './ProjectSummary'
 
 const ProjectList = ({projects}) => {
-    console.log('teste');
+    console.log('na lista de projetos');
     console.log(projects);
     return(
         <div className="project-list section">
