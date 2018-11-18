@@ -11,19 +11,25 @@ import { reduxFirestore, getFirestore } from 'redux-firestore';
 import { reactReduxFirebase, getFirebase } from 'react-redux-firebase';
 import fbConfig from './config/fbConfig'
 
-
+//Utilizando store temos agora um ponto central na aplicação para
+// manipular o State
 const store = createStore(rootReducer,
     compose(
       applyMiddleware(thunk.withExtraArgument({getFirebase, getFirestore})),
-      reactReduxFirebase(fbConfig), // redux binding for firebase
+      reactReduxFirebase(fbConfig, {attachAuthIsReady:true}), // redux binding for firebase
       reduxFirestore(fbConfig) // redux bindings for firestore
     )
   );
 
-//ReactDOM.render(<Provider store={store} ><App /> </Provider> , document.getElementById('root'));
-ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'));
+//utilizado para carregar a aplicação depois que o firebase tiver sido inicializado
+store.firebaseAuthIsReady.then(() => {
+  
+  //ReactDOM.render(<Provider store={store} ><App /> </Provider> , document.getElementById('root'));
+  ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'));
+  
+  // If you want your app to work offline and load faster, you can change
+  // unregister() to register() below. Note this comes with some pitfalls.
+  // Learn more about service workers: http://bit.ly/CRA-PWA
+  serviceWorker.unregister();
+})  
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: http://bit.ly/CRA-PWA
-serviceWorker.unregister();

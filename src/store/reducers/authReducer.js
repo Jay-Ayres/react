@@ -3,9 +3,7 @@ const initState = {
 }
 
 const authReducer = (state = initState, action) => {
-    console.log('verificando o state no reducer 1');
-    console.log(state);
-    console.log(action);
+    
     switch(action.type){
         case 'LOGIN_ERROR':
             console.log('Verificando Error...')
@@ -21,8 +19,22 @@ const authReducer = (state = initState, action) => {
         case 'SIGNOUT_SUCCESS':
             console.log('Signout ocorreu com sucesso')
             return state 
-        default:
+        case 'SIGNUP_SUCCESS':
+            console.log('Signout ocorreu com sucesso')
+            return {
+                ...state,
+                authError:null 
+            }
+        case 'SIGNUP_ERROR':
+            console.log('Signup error'+action.err.message)
+            return {
+                ...state,
+                authError:action.err.message 
+            }
+        default:{
+            console.log("testeeeeeeee")
             return state    
+        }
     }
     console.log('verificando o state no reducer');
     console.log(state);

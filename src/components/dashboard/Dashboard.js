@@ -4,11 +4,13 @@ import ProjectList from '../projects/ProjectList';
 import { connect } from 'react-redux';
 import { firestoreConnect } from 'react-redux-firebase';
 import { compose } from 'redux';
+import { Redirect } from 'react-router-dom';
 
 class Dashboard extends Component {
     render() {
         console.log("log do componente");
-        const { projects } = this.props;
+        const { projects, auth } = this.props;
+        if (!auth.uid) return <Redirect to='/signin' />
         console.log(projects);
         return (
             <div className="dashboard container">
@@ -25,12 +27,15 @@ class Dashboard extends Component {
     }
 }   
 
+// função utilizada para mapear a propriedade deseja da store para dentro
+//do props do componente
 const mapStateToProps = (state) => {
     console.log(state);
     console.log("la vem o data");
     console.log(state.firestore.ordered.projects);
     return {
-      projects: state.firestore.ordered.projects
+      projects: state.firestore.ordered.projects,
+      auth: state.firebase.auth
     }
   }
 
